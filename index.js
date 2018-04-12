@@ -8,7 +8,7 @@ import rgb2hex from 'rgb2hex';
 
 class LinearGradient extends Component {
   render () {
-    const {color0, color1, children, points} = this.props;
+    const {color0, color1, children, points, animate} = this.props;
     const gStart = points.start;
     const gEnd = points.end;
     return (
@@ -24,7 +24,6 @@ class LinearGradient extends Component {
   }
 }
 Animated.LinearGradient = Animated.createAnimatedComponent(LinearGradient)
-// Animated.NativeLinearGradient = Animated.createAnimatedComponent(NativeLinearGradient)
 
 export const presetColors = {
   instagram: [
@@ -70,7 +69,17 @@ class AnimatedGradient extends Component {
   }
 
   componentDidMount = () => {
-    this.startAnimation();
+    if (this.props.animate) {
+      this.startAnimation();
+    }
+  }
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.animate) {
+      this.startAnimation();
+    } else {
+      this.stopAnimation();
+    }
   }
 
   startAnimation = () => {
